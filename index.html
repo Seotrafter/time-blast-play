@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Blast: Puzzle Game</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel='icon' href='/src/icons/logo.png' type='image/x-icon'>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2b362a',
+                        secondary: '#f0bf30',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .glow {
+            filter: drop-shadow(0 0 0.75rem rgba(240, 191, 48, 0.5));
+        }
+
+        .btn-hover:hover {
+            transform: scale(1.05);
+            transition: transform 0.3s ease;
+        }
+
+        .parallax {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .custom-shape {
+            clip-path: polygon(0 0, 100% 15%, 100% 85%, 0% 100%);
+        }
+
+        .custom-shape-reverse {
+            clip-path: polygon(0 15%, 100% 0, 100% 100%, 0 85%);
+        }
+
+        @media (max-width: 768px) {
+
+            .custom-shape,
+            .custom-shape-reverse {
+                clip-path: none;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-primary text-white">
+    <!-- Header Section -->
+    <header class="fixed w-full bg-primary shadow-lg z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="/" class="flex items-center gap-2">
+                <div class="w-12 h-12 bg-secondary text-primary rounded-md flex items-center justify-center font-bold text-xl glow">TB</div>
+                <h1 class="text-xl md:text-2xl font-bold">TIME BLAST</h1>
+            </a>
+
+            <nav class="hidden md:flex gap-6">
+                <a href="#features" class="font-bold hover:text-secondary transition-colors">FEATURES</a>
+                <a href="#gameplay" class="font-bold hover:text-secondary transition-colors">GAMEPLAY</a>
+                <a href="#worlds" class="font-bold hover:text-secondary transition-colors">WORLDS</a>
+                <a href="#reviews" class="font-bold hover:text-secondary transition-colors">REVIEWS</a>
+                <a href="#download" class="font-bold hover:text-secondary transition-colors">DOWNLOAD</a>
+            </nav>
+
+            <button id="mobileMenuBtn" class="md:hidden text-2xl">☰</button>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden md:hidden w-full bg-primary shadow-lg">
+            <div class="container mx-auto px-4 py-4 flex flex-col">
+                <a href="#features" class="font-bold py-3 border-b border-white/10 hover:text-secondary transition-colors">FEATURES</a>
+                <a href="#gameplay" class="font-bold py-3 border-b border-white/10 hover:text-secondary transition-colors">GAMEPLAY</a>
+                <a href="#worlds" class="font-bold py-3 border-b border-white/10 hover:text-secondary transition-colors">WORLDS</a>
+                <a href="#reviews" class="font-bold py-3 border-b border-white/10 hover:text-secondary transition-colors">REVIEWS</a>
+                <a href="#download" class="font-bold py-3 hover:text-secondary transition-colors">DOWNLOAD</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="min-h-screen pt-24 pb-16 flex items-center justify-center bg-primary relative overflow-hidden">
+        <div class="absolute inset-0 opacity-20 bg-[url('/src/img/hero-bg.png')] bg-cover bg-center mix-blend-overlay"></div>
+        <div class="absolute top-20 left-10 w-32 h-32 bg-secondary/20 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-20 right-10 w-40 h-40 bg-secondary/20 rounded-full blur-3xl"></div>
+
+        <div class="container mx-auto px-4 z-10 text-center">
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight">
+                <span class="text-secondary glow">TIME BLAST</span>
+                <br>MATCH-3 PUZZLE ADVENTURE
+            </h1>
+
+            <p class="text-xl md:text-2xl max-w-3xl mx-auto mb-10 text-gray-200">
+                Embark on an epic time-traveling adventure with the Timesmith family! Match, blast, and solve your way through history's most exciting eras.
+            </p>
+
+            <div class="flex flex-col md:flex-row gap-4 justify-center">
+                <a href="#download" class="bg-secondary text-primary text-xl md:text-2xl font-bold py-4 px-8 shadow-lg hover:bg-opacity-90 transition-all btn-hover flex items-center justify-center gap-2">
+                    <span>DOWNLOAD NOW</span>
+                    <span>⏱️</span>
+                </a>
+                <a href="#gameplay" class="bg-white/10 backdrop-blur-sm text-xl md:text-2xl font-bold py-4 px-8 shadow-lg hover:bg-opacity-20 transition-all btn-hover">
+                    EXPLORE GAME
+                </a>
+            </div>
+
+
+
+            <div class="mt-8 flex flex-wrap justify-center gap-6">
+                <div class="bg-white/5 backdrop-blur-sm p-4 font-bold">
+                    <span class="text-secondary text-2xl">100K+</span>
+                    <p>Downloads</p>
+                </div>
+                <div class="bg-white/5 backdrop-blur-sm p-4 font-bold">
+                    <span class="text-secondary text-2xl">5,730</span>
+                    <p>Reviews</p>
+                </div>
+                <div class="bg-white/5 backdrop-blur-sm p-4 font-bold">
+                    <span class="text-secondary text-2xl">3+</span>
+                    <p>Age Rating</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-secondary text-primary custom-shape">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl md:text-5xl font-black mb-16 text-center mt-8">GAME FEATURES</h2>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-primary/10 p-6 shadow-lg transform hover:scale-105 transition-transform">
+                    <div class="text-4xl mb-4">🧩</div>
+                    <h3 class="text-2xl font-bold mb-3">HUNDREDS OF LEVELS</h3>
+                    <p class="text-lg">Challenge yourself with hundreds of uniquely designed puzzle levels that will test your matching skills and strategic thinking.</p>
+                </div>
+
+                <div class="bg-primary/10 p-6 shadow-lg transform hover:scale-105 transition-transform">
+                    <div class="text-4xl mb-4">⏳</div>
+                    <h3 class="text-2xl font-bold mb-3">TIME TRAVEL ADVENTURE</h3>
+                    <p class="text-lg">Journey through different historical eras with the Timesmith family, from ancient civilizations to the wild west.</p>
+                </div>
+
+                <div class="bg-primary/10 p-6 shadow-lg transform hover:scale-105 transition-transform">
+                    <div class="text-4xl mb-4">🚀</div>
+                    <h3 class="text-2xl font-bold mb-3">POWERFUL BOOSTERS</h3>
+                    <p class="text-lg">Unlock and use special boosters to overcome challenging obstacles and create spectacular explosions on the game board.</p>
+                </div>
+
+                <div class="bg-primary/10 p-6 shadow-lg transform hover:scale-105 transition-transform">
+                    <div class="text-4xl mb-4">✨</div>
+                    <h3 class="text-2xl font-bold mb-3">MAGICAL ART STYLE</h3>
+                    <p class="text-lg">Immerse yourself in a vibrant and captivating visual experience with charming characters and stunning environments.</p>
+                </div>
+
+                <div class="bg-primary/10 p-6 shadow-lg transform hover:scale-105 transition-transform">
+                    <div class="text-4xl mb-4">🏆</div>
+                    <h3 class="text-2xl font-bold mb-3">ACHIEVEMENTS & REWARDS</h3>
+                    <p class="text-lg">Complete special missions and earn achievements to unlock exclusive rewards and game content.</p>
+                </div>
+
+                <div class="bg-primary/10 p-6 shadow-lg transform hover:scale-105 transition-transform">
+                    <div class="text-4xl mb-4">🎮</div>
+                    <h3 class="text-2xl font-bold mb-3">ADDICTIVE GAMEPLAY</h3>
+                    <p class="text-lg">Easy to learn, hard to master! Perfect for casual players and puzzle enthusiasts alike with increasing difficulty.</p>
+                </div>
+            </div>
+
+            <div class="mt-16 text-center mb-16">
+                <p class="text-2xl font-bold mb-6">JOIN OVER 100,000 PLAYERS WORLDWIDE!</p>
+                <a href="#download" class="inline-block bg-primary text-white text-xl font-bold py-4 px-8 shadow-lg hover:bg-opacity-90 transition-all btn-hover">GET STARTED NOW</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gameplay Section -->
+    <section id="gameplay" class="py-20 bg-primary relative">
+        <div class="absolute inset-0 opacity-10 bg-[url('/src/img/how_play.png')] bg-cover bg-center"></div>
+
+        <div class="container mx-auto px-4 relative z-10">
+            <h2 class="text-4xl md:text-5xl font-black mb-16 text-center">HOW TO <span class="text-secondary glow">PLAY</span></h2>
+
+            <div class="flex flex-col md:flex-row items-center gap-10 mb-20">
+                <div class="md:w-1/2">
+                    <img src="/src/img/how_play.png" alt="Gameplay Screenshot" class="w-full shadow-lg glow">
+                </div>
+
+                <div class="md:w-1/2">
+                    <h3 class="text-3xl font-bold mb-6 text-secondary">MATCH & BLAST</h3>
+                    <p class="text-xl mb-4">Swap adjacent cubes to match three or more of the same color. Create powerful combinations to trigger special effects and explosions!</p>
+                    <ul class="space-y-3 text-lg">
+                        <li class="flex items-start gap-2">
+                            <span class="text-secondary font-bold">✓</span>
+                            <span>Match 3 cubes for a basic clear</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-secondary font-bold">✓</span>
+                            <span>Match 4 cubes to create a line blaster</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-secondary font-bold">✓</span>
+                            <span>Match 5 cubes in an L-shape for a bomb</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-secondary font-bold">✓</span>
+                            <span>Match 5 in a line for a color-clearing rocket</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row-reverse items-center gap-10">
+                <div class="md:w-1/2">
+                    <img src="/src/img/how_play-2.png" alt="Boosters Screenshot" class="w-full shadow-lg glow">
+                </div>
+
+                <div class="md:w-1/2">
+                    <h3 class="text-3xl font-bold mb-6 text-secondary">POWER-UPS & BOOSTERS</h3>
+                    <p class="text-xl mb-4">Use special power-ups strategically to overcome challenging levels and obstacles. Combine boosters for even more powerful effects!</p>
+                    <div class="grid grid-cols-2 gap-4 mt-6">
+                        <div class="bg-white/5 backdrop-blur-sm p-4">
+                            <div class="text-3xl mb-2">🔨</div>
+                            <h4 class="font-bold text-lg">HAMMER</h4>
+                            <p>Removes any single cube</p>
+                        </div>
+                        <div class="bg-white/5 backdrop-blur-sm p-4">
+                            <div class="text-3xl mb-2">💥</div>
+                            <h4 class="font-bold text-lg">BOMB</h4>
+                            <p>Clears cubes in a 3x3 area</p>
+                        </div>
+                        <div class="bg-white/5 backdrop-blur-sm p-4">
+                            <div class="text-3xl mb-2">🪄</div>
+                            <h4 class="font-bold text-lg">COLOR WAND</h4>
+                            <p>Removes all cubes of one color</p>
+                        </div>
+                        <div class="bg-white/5 backdrop-blur-sm p-4">
+                            <div class="text-3xl mb-2">⚡</div>
+                            <h4 class="font-bold text-lg">LIGHTNING</h4>
+                            <p>Clears an entire row and column</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Time Worlds Section -->
+    <section id="worlds" class="py-20 bg-white text-primary custom-shape-reverse">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl md:text-5xl font-black mb-16 text-center mt-16">TIME PERIODS</h2>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+                <div class="bg-primary text-white p-6 shadow-lg">
+
+                    <h3 class="text-2xl font-bold mb-2">ANCIENT EGYPT</h3>
+                    <p class="text-lg mb-4">Match your way through the era of pharaohs and pyramids. Watch out for scarab beetles and sand obstacles!</p>
+                    <div class="flex items-center gap-2">
+                        <div class="w-3 h-3 bg-secondary"></div>
+                        <span class="font-bold">40 UNIQUE LEVELS</span>
+                    </div>
+                </div>
+
+                <div class="bg-primary text-white p-6 shadow-lg">
+
+                    <h3 class="text-2xl font-bold mb-2">MEDIEVAL TIMES</h3>
+                    <p class="text-lg mb-4">Explore castles and kingdoms in this medieval adventure. Break through knight armor and dragon obstacles!</p>
+                    <div class="flex items-center gap-2">
+                        <div class="w-3 h-3 bg-secondary"></div>
+                        <span class="font-bold">45 UNIQUE LEVELS</span>
+                    </div>
+                </div>
+
+                <div class="bg-primary text-white p-6 shadow-lg">
+
+                    <h3 class="text-2xl font-bold mb-2">WILD WEST</h3>
+                    <p class="text-lg mb-4">Saddle up for a puzzle adventure in the American frontier. Deal with cacti and tumbleweeds blocking your matches!</p>
+                    <div class="flex items-center gap-2">
+                        <div class="w-3 h-3 bg-secondary"></div>
+                        <span class="font-bold">50 UNIQUE LEVELS</span>
+                    </div>
+                </div>
+
+                <div class="bg-primary text-white p-6 shadow-lg">
+
+                    <h3 class="text-2xl font-bold mb-2">INDUSTRIAL AGE</h3>
+                    <p class="text-lg mb-4">Navigate through gears and steam machines in this industrial puzzle challenge. Watch out for locked cogs!</p>
+                    <div class="flex items-center gap-2">
+                        <div class="w-3 h-3 bg-secondary"></div>
+                        <span class="font-bold">55 UNIQUE LEVELS</span>
+                    </div>
+                </div>
+
+                <div class="bg-primary text-white p-6 shadow-lg">
+
+                    <h3 class="text-2xl font-bold mb-2">ROARING 20s</h3>
+                    <p class="text-lg mb-4">Swing into the jazz age with flapper-themed puzzles. Deal with music note obstacles and dance floor challenges!</p>
+                    <div class="flex items-center gap-2">
+                        <div class="w-3 h-3 bg-secondary"></div>
+                        <span class="font-bold">40 UNIQUE LEVELS</span>
+                    </div>
+                </div>
+
+                <div class="bg-primary text-white p-6 shadow-lg">
+
+                    <h3 class="text-2xl font-bold mb-2">FUTURE WORLD</h3>
+                    <p class="text-lg mb-4">Blast into the future with high-tech puzzle challenges. Overcome hologram barriers and robot obstacles!</p>
+                    <div class="flex items-center gap-2">
+                        <div class="w-3 h-3 bg-secondary"></div>
+                        <span class="font-bold">60 UNIQUE LEVELS</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mb-16">
+                <p class="text-2xl font-bold mb-6">NEW WORLDS COMING SOON!</p>
+                <a href="#download" class="inline-block bg-secondary text-primary text-xl font-bold py-4 px-8 shadow-lg hover:bg-opacity-90 transition-all btn-hover">PLAY NOW</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section id="reviews" class="py-20 bg-primary relative">
+        <div class="absolute inset-0 opacity-10 bg-[url('/src/img/comment.png')] bg-cover bg-center"></div>
+
+        <div class="container mx-auto px-4 relative z-10">
+            <h2 class="text-4xl md:text-5xl font-black mb-16 text-center">PLAYER <span class="text-secondary glow">REVIEWS</span></h2>
+
+            <div class="flex justify-center mb-10">
+                <div class="bg-white/5 backdrop-blur-sm p-8 text-center max-w-2xl">
+                    <div class="text-secondary text-4xl font-bold mb-4">4.5 ★★★★☆</div>
+                    <p class="text-xl mb-4">Based on <span class="font-bold">5,730</span> reviews</p>
+                    <div class="h-2 bg-white/20 w-full mb-6">
+                        <div class="h-full bg-secondary" style="width: 90%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white/5 backdrop-blur-sm p-6">
+                    <div class="text-secondary text-xl mb-2">★★★★★</div>
+                    <p class="text-lg mb-4">"This game is absolutely addictive! I've been playing for weeks and still can't get enough. The time travel theme makes it unique and exciting!"</p>
+                    <div class="font-bold">Sarah T.</div>
+                </div>
+
+                <div class="bg-white/5 backdrop-blur-sm p-6">
+                    <div class="text-secondary text-xl mb-2">★★★★★</div>
+                    <p class="text-lg mb-4">"Best match-3 game I've played! The different time periods keep things fresh, and the power-ups are super satisfying. Highly recommend!"</p>
+                    <div class="font-bold">Michael R.</div>
+                </div>
+
+                <div class="bg-white/5 backdrop-blur-sm p-6">
+                    <div class="text-secondary text-xl mb-2">★★★★☆</div>
+                    <p class="text-lg mb-4">"Love the graphics and gameplay! The challenges get really tough in later levels, but that's what makes it fun. Just wish there were more worlds!"</p>
+                    <div class="font-bold">Emma L.</div>
+                </div>
+
+                <div class="bg-white/5 backdrop-blur-sm p-6">
+                    <div class="text-secondary text-xl mb-2">★★★★★</div>
+                    <p class="text-lg mb-4">"I'm not usually into mobile games, but Time Blast has me hooked! The time travel concept is brilliant and the puzzles are genuinely challenging."</p>
+                    <div class="font-bold">James K.</div>
+                </div>
+
+                <div class="bg-white/5 backdrop-blur-sm p-6">
+                    <div class="text-secondary text-xl mb-2">★★★★☆</div>
+                    <p class="text-lg mb-4">"Perfect game for quick breaks or long play sessions. The different historical settings make each level feel fresh and exciting!"</p>
+                    <div class="font-bold">Olivia P.</div>
+                </div>
+
+                <div class="bg-white/5 backdrop-blur-sm p-6">
+                    <div class="text-secondary text-xl mb-2">★★★★★</div>
+                    <p class="text-lg mb-4">"My whole family is obsessed with Time Blast! We compete for high scores and help each other with tough levels. Definitely a 5-star game!"</p>
+                    <div class="font-bold">Daniel W.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download Section -->
+    <section id="download" class="py-20 bg-secondary text-primary">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl md:text-5xl font-black mb-10 text-center">READY TO START YOUR TIME ADVENTURE?</h2>
+
+            <div class="flex flex-col md:flex-row items-center justify-center gap-16 mb-16">
+                <img src="/src/img/download.png" alt="Time Blast Mobile Screenshot" class="max-w-xs shadow-2xl">
+
+                <div class="text-center md:text-left">
+                    <h3 class="text-3xl font-bold mb-6">DOWNLOAD <span class="underline decoration-primary">TIME BLAST</span> NOW!</h3>
+                    <p class="text-xl mb-8 max-w-lg">Join over 100,000 players worldwide in this epic time-traveling puzzle adventure. Available for iOS and Android devices.</p>
+
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                        <a href="https://apps.apple.com/ua/app/time-blast-puzzle-game/id6471031068?" target="_blank" class="bg-primary text-white text-xl font-bold py-4 px-8 shadow-lg hover:bg-opacity-90 transition-all btn-hover flex items-center justify-center gap-2">
+                            <span class="text-3xl">🍎</span>
+                            <span>APP STORE</span>
+                        </a>
+                        <a href="https://play.google.com/store/apps/details?id=com.wildlifestudios.timetales&pcampaignid=web_share" target="_blank" class="bg-primary text-white text-xl font-bold py-4 px-8 shadow-lg hover:bg-opacity-90 transition-all btn-hover flex items-center justify-center gap-2">
+                            <span class="text-3xl">🤖</span>
+                            <span>GOOGLE PLAY</span>
+                        </a>
+                    </div>
+
+                    <div class="mt-10">
+                        <p class="text-xl font-bold mb-4">GAME FEATURES:</p>
+                        <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-lg">
+                            <li class="flex items-center gap-2">
+                                <span class="text-primary font-bold">✓</span>
+                                <span>300+ challenging levels</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <span class="text-primary font-bold">✓</span>
+                                <span>6 unique time periods</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <span class="text-primary font-bold">✓</span>
+                                <span>Special power-ups & boosters</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <span class="text-primary font-bold">✓</span>
+                                <span>No internet required</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <span class="text-primary font-bold">✓</span>
+                                <span>Regular updates & events</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <span class="text-primary font-bold">✓</span>
+                                <span>Suitable for all ages (3+)</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="py-10 bg-primary">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+                <a href="/" class="flex items-center gap-2 mb-6 md:mb-0">
+                    <div class="w-12 h-12 bg-secondary text-primary rounded-md flex items-center justify-center font-bold text-xl">TB</div>
+                    <h1 class="text-xl font-bold">TIME BLAST</h1>
+                </a>
+
+                <div class="flex gap-6">
+                    <a href="https://www.facebook.com/Wildlife-Studios-168539526551930/?ref=py_c" target="_blank" class="text-3xl hover:text-secondary transition-colors">📱</a>
+                    <a href="https://www.linkedin.com/company/wildlife-studios" target="_blank" class="text-3xl hover:text-secondary transition-colors">📧</a>
+                    <a href="https://www.youtube.com/channel/UCgYHGkTMJ6iInwyNWOCmbkA" target="_blank" class="text-3xl hover:text-secondary transition-colors">🎮</a>
+                    <a href="https://www.instagram.com/WildlifeStudios" target="_blank" class="text-3xl hover:text-secondary transition-colors">📣</a>
+                </div>
+            </div>
+
+            <div class="border-t border-white/20 pt-6 flex flex-col md:flex-row justify-between items-center">
+                <div class="text-sm text-white/70 mb-4 md:mb-0">
+                    © 2025 Time Blast. All Rights Reserved.
+                </div>
+
+                <div class="flex flex-wrap gap-4 justify-center">
+                    <a href="/Policy356/" class="text-sm text-white/70 hover:text-secondary transition-colors">Privacy Policy</a>
+                    <a href="/Service347/" class="text-sm text-white/70 hover:text-secondary transition-colors">Terms of Use</a>
+                    <a href="/Cookie992/" class="text-sm text-white/70 hover:text-secondary transition-colors">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        // Wait for the document to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get elements
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+
+            // Toggle mobile menu when button is clicked
+            mobileMenuBtn.addEventListener('click', function() {
+                if (mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.remove('hidden');
+                    mobileMenuBtn.textContent = '✕';
+                } else {
+                    mobileMenu.classList.add('hidden');
+                    mobileMenuBtn.textContent = '☰';
+                }
+            });
+
+            // Close mobile menu when clicking a link
+            const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+            mobileMenuLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileMenu.classList.add('hidden');
+                    mobileMenuBtn.textContent = '☰';
+                });
+            });
+
+            // Close mobile menu when scrolling
+            window.addEventListener('scroll', function() {
+                if (!mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                    mobileMenuBtn.textContent = '☰';
+                }
+            });
+
+            // Add smooth scrolling to all links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80, // Adjust for header height
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+    <?php include 'cookie-consent.php'; ?>
+</body>
+
+</html>

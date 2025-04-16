@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Blast: Puzzle Game</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel='icon' href='/src/icons/logo.png' type='image/x-icon'>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2b362a',
+                        secondary: '#f0bf30',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .glow {
+            filter: drop-shadow(0 0 0.75rem rgba(240, 191, 48, 0.5));
+        }
+
+        .btn-hover:hover {
+            transform: scale(1.05);
+            transition: transform 0.3s ease;
+        }
+
+        .parallax {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .custom-shape {
+            clip-path: polygon(0 0, 100% 15%, 100% 85%, 0% 100%);
+        }
+
+        .custom-shape-reverse {
+            clip-path: polygon(0 15%, 100% 0, 100% 100%, 0 85%);
+        }
+
+        @media (max-width: 768px) {
+
+            .custom-shape,
+            .custom-shape-reverse {
+                clip-path: none;
+            }
+        }
+
+        .cookie-section {
+            background-color: #2b362a;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .cookie-header {
+            background-color: #f0bf30;
+            padding: 6rem 1rem;
+            padding-top: 12rem;
+            text-align: center;
+        }
+
+        .cookie-header h1 {
+            color: #2b362a;
+            font-size: 3rem;
+            font-weight: 900;
+            margin: 0;
+            letter-spacing: 0.05em;
+        }
+
+        .cookie-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+        }
+
+        .cookie-section h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #f0bf30;
+            margin-top: 2.5rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.02em;
+        }
+
+        .cookie-section h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #f0bf30;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .cookie-section p {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .cookie-section ul,
+        .cookie-section ol {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+        }
+
+        .cookie-section li {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 0.5rem;
+        }
+
+        .cookie-section a {
+            color: #f0bf30;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .cookie-section a:hover {
+            text-decoration: underline;
+        }
+
+        .cookie-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-left: 4px solid #f0bf30;
+        }
+
+        .cookie-divider {
+            height: 4px;
+            background: #f0bf30;
+            width: 100px;
+            margin: 3rem 0;
+        }
+
+        .cookie-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
+        }
+
+        .cookie-table th {
+            background-color: rgba(240, 191, 48, 0.2);
+            color: #f0bf30;
+            font-weight: 700;
+            text-align: left;
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .cookie-table td {
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .cookie-table tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+
+        @media (max-width: 768px) {
+            .cookie-header h1 {
+                font-size: 2.25rem;
+            }
+
+            .cookie-section h2 {
+                font-size: 1.75rem;
+            }
+
+            .cookie-section h3 {
+                font-size: 1.35rem;
+            }
+
+            .cookie-container {
+                padding: 2rem 1rem;
+            }
+
+            .cookie-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-primary text-white">
+    <!-- Header Section -->
+    <header class="fixed w-full bg-primary shadow-lg z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="/" class="flex items-center gap-2">
+                <div class="w-12 h-12 bg-secondary text-primary rounded-md flex items-center justify-center font-bold text-xl glow">TB</div>
+                <h1 class="text-xl md:text-2xl font-bold">TIME BLAST</h1>
+            </a>
+
+            <nav class="hidden md:flex gap-6">
+                <a href="/" class="font-bold hover:text-secondary transition-colors">FEATURES</a>
+                <a href="/" class="font-bold hover:text-secondary transition-colors">GAMEPLAY</a>
+                <a href="/" class="font-bold hover:text-secondary transition-colors">WORLDS</a>
+                <a href="/" class="font-bold hover:text-secondary transition-colors">REVIEWS</a>
+                <a href="/" class="font-bold hover:text-secondary transition-colors">DOWNLOAD</a>
+            </nav>
+
+            <button id="mobileMenuBtn" class="md:hidden text-2xl">☰</button>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden md:hidden w-full bg-primary shadow-lg">
+            <div class="container mx-auto px-4 py-4 flex flex-col">
+                <a href="/" class="font-bold py-3 border-b border-white/10 hover:text-secondary transition-colors">FEATURES</a>
+                <a href="/" class="font-bold py-3 border-b border-white/10 hover:text-secondary transition-colors">GAMEPLAY</a>
+                <a href="/" class="font-bold py-3 border-b border-white/10 hover:text-secondary transition-colors">WORLDS</a>
+                <a href="/" class="font-bold py-3 border-b border-white/10 hover:text-secondary transition-colors">REVIEWS</a>
+                <a href="/" class="font-bold py-3 hover:text-secondary transition-colors">DOWNLOAD</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Cookie Policy Header -->
+    <section class="cookie-header">
+        <h1>COOKIE POLICY</h1>
+    </section>
+
+    <!-- Cookie Policy Content -->
+    <section class="cookie-section">
+        <div class="cookie-container">
+            <div class="cookie-card">
+                <p>This Cookie Policy explains how TIME BLAST ("we", "us", or "our") uses cookies and similar technologies to recognize you when you visit our website at https://time-blast-play.com/ ("Website"). It explains what these technologies are and why we use them, as well as your rights to control our use of them.</p>
+
+                <p>This Cookie Policy is effective as of March 21, 2025. We may change this Cookie Policy at any time. Please take a look at the "Last Updated" date at the bottom of this page to see when this Cookie Policy was last revised.</p>
+            </div>
+
+            <h2>WHAT ARE COOKIES?</h2>
+            <div class="cookie-divider"></div>
+            <p>Cookies are small data files that are placed on your computer or mobile device when you visit a website. Cookies are widely used by website owners in order to make their websites work, or to work more efficiently, as well as to provide reporting information.</p>
+
+            <p>Cookies set by the website owner (in this case, TIME BLAST) are called "first-party cookies." Cookies set by parties other than the website owner are called "third-party cookies." Third-party cookies enable third-party features or functionality to be provided on or through the website (e.g., advertising, interactive content, and analytics). The parties that set these third-party cookies can recognize your computer both when it visits the website in question and also when it visits certain other websites.</p>
+            <h2>WHY DO WE USE COOKIES?</h2>
+            <div class="cookie-divider"></div>
+            <p>We use first-party and third-party cookies for several reasons. Some cookies are required for technical reasons in order for our Website to operate, and we refer to these as "essential" or "strictly necessary" cookies. Other cookies also enable us to track and target the interests of our users to enhance the experience on our Website. Third parties serve cookies through our Website for advertising, analytics, and other purposes. This is described in more detail below.</p>
+
+            <h2>TYPES OF COOKIES WE USE</h2>
+            <div class="cookie-divider"></div>
+            <p>The specific types of first and third-party cookies served through our Website and the purposes they perform are described below:</p>
+
+            <h3>ESSENTIAL COOKIES</h3>
+            <p>These cookies are strictly necessary to provide you with services available through our Website and to use some of its features, such as access to secure areas. Because these cookies are strictly necessary to deliver the Website, you cannot refuse them without impacting how our Website functions.</p>
+
+            <table class="cookie-table">
+                <thead>
+                    <tr>
+                        <th>Cookie Name</th>
+                        <th>Source</th>
+                        <th>Purpose</th>
+                        <th>Expiration</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>session_id</td>
+                        <td>time-blast-play.com</td>
+                        <td>Maintains your session state across page requests</td>
+                        <td>Session</td>
+                    </tr>
+                    <tr>
+                        <td>aprenderd_cookie_consent</td>
+                        <td>time-blast-play.com</td>
+                        <td>Remembers your cookie consent preferences</td>
+                        <td>1 year</td>
+                    </tr>
+                    <tr>
+                        <td>csrf_token</td>
+                        <td>time-blast-play.com</td>
+                        <td>Helps prevent Cross-Site Request Forgery attacks</td>
+                        <td>Session</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>PERFORMANCE AND FUNCTIONALITY COOKIES</h3>
+            <p>These cookies are used to enhance the performance and functionality of our Website but are non-essential to their use. However, without these cookies, certain functionality may become unavailable.</p>
+
+            <table class="cookie-table">
+                <thead>
+                    <tr>
+                        <th>Cookie Name</th>
+                        <th>Source</th>
+                        <th>Purpose</th>
+                        <th>Expiration</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>language</td>
+                        <td>time-blast-play.com</td>
+                        <td>Remembers your language preference</td>
+                        <td>1 year</td>
+                    </tr>
+                    <tr>
+                        <td>ui_settings</td>
+                        <td>time-blast-play.com</td>
+                        <td>Stores user interface preferences</td>
+                        <td>1 year</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3>ANALYTICS AND CUSTOMIZATION COOKIES</h3>
+            <p>These cookies collect information that is used either in aggregate form to help us understand how our Website is being used or how effective our marketing campaigns are, or to help us customize our Website for you.</p>
+
+            <table class="cookie-table">
+                <thead>
+                    <tr>
+                        <th>Cookie Name</th>
+                        <th>Source</th>
+                        <th>Purpose</th>
+                        <th>Expiration</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>_ga</td>
+                        <td>Google Analytics</td>
+                        <td>Used to distinguish users for analytics purposes</td>
+                        <td>2 years</td>
+                    </tr>
+                    <tr>
+                        <td>_gid</td>
+                        <td>Google Analytics</td>
+                        <td>Used to distinguish users for analytics purposes</td>
+                        <td>24 hours</td>
+                    </tr>
+                    <tr>
+                        <td>_gat</td>
+                        <td>Google Analytics</td>
+                        <td>Used to throttle request rate</td>
+                        <td>1 minute</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>ADVERTISING COOKIES</h3>
+            <p>These cookies are used to make advertising messages more relevant to you. They perform functions like preventing the same ad from continuously reappearing, ensuring that ads are properly displayed, and in some cases selecting advertisements that are based on your interests.</p>
+
+            <table class="cookie-table">
+                <thead>
+                    <tr>
+                        <th>Cookie Name</th>
+                        <th>Source</th>
+                        <th>Purpose</th>
+                        <th>Expiration</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>_fbp</td>
+                        <td>Facebook</td>
+                        <td>Used by Facebook to deliver advertisements</td>
+                        <td>3 months</td>
+                    </tr>
+                    <tr>
+                        <td>IDE</td>
+                        <td>Google DoubleClick</td>
+                        <td>Used for targeting and advertising</td>
+                        <td>1 year</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>HOW CAN YOU CONTROL COOKIES?</h2>
+            <div class="cookie-divider"></div>
+            <p>You have the right to decide whether to accept or reject cookies. You can exercise your cookie rights by setting your preferences in the Cookie Consent Banner that appears when you first visit our Website.</p>
+
+            <p>You can also set or amend your web browser controls to accept or refuse cookies. If you choose to reject cookies, you may still use our Website though your access to some functionality and areas of our Website may be restricted. As the means by which you can refuse cookies through your web browser controls vary from browser-to-browser, you should visit your browser's help menu for more information.</p>
+
+            <p>In addition, most advertising networks offer you a way to opt out of targeted advertising. If you would like to find out more information, please visit <a href="http://www.aboutads.info/choices/" target="_blank">http://www.aboutads.info/choices/</a> or <a href="http://www.youronlinechoices.com" target="_blank">http://www.youronlinechoices.com</a>.</p>
+
+            <h2>HOW OFTEN WILL WE UPDATE THIS COOKIE POLICY?</h2>
+            <div class="cookie-divider"></div>
+            <p>We may update this Cookie Policy from time to time in order to reflect, for example, changes to the cookies we use or for other operational, legal or regulatory reasons. Please therefore re-visit this Cookie Policy regularly to stay informed about our use of cookies and related technologies.</p>
+
+            <div class="cookie-card" style="margin-top: 4rem;">
+                <h3>CONTACT US</h3>
+                <p>If you have any questions about our use of cookies or other technologies, please email us at support@time-blast-play.com.</p>
+                <p>Last Updated: March 21, 2025</p>
+            </div>
+        </div>
+    </section>
+    <!-- Footer Section -->
+    <footer class="py-10 bg-primary">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+                <a href="/" class="flex items-center gap-2 mb-6 md:mb-0">
+                    <div class="w-12 h-12 bg-secondary text-primary rounded-md flex items-center justify-center font-bold text-xl">TB</div>
+                    <h1 class="text-xl font-bold">TIME BLAST</h1>
+                </a>
+
+                <div class="flex gap-6">
+                    <a href="https://www.facebook.com/Wildlife-Studios-168539526551930/?ref=py_c" target="_blank" class="text-3xl hover:text-secondary transition-colors">📱</a>
+                    <a href="https://www.linkedin.com/company/wildlife-studios" target="_blank" class="text-3xl hover:text-secondary transition-colors">📧</a>
+                    <a href="https://www.youtube.com/channel/UCgYHGkTMJ6iInwyNWOCmbkA" target="_blank" class="text-3xl hover:text-secondary transition-colors">🎮</a>
+                    <a href="https://www.instagram.com/WildlifeStudios" target="_blank" class="text-3xl hover:text-secondary transition-colors">📣</a>
+                </div>
+            </div>
+
+            <div class="border-t border-white/20 pt-6 flex flex-col md:flex-row justify-between items-center">
+                <div class="text-sm text-white/70 mb-4 md:mb-0">
+                    © 2025 Time Blast. All Rights Reserved.
+                </div>
+
+                <div class="flex flex-wrap gap-4 justify-center">
+                    <a href="/Policy356/" class="text-sm text-white/70 hover:text-secondary transition-colors">Privacy Policy</a>
+                    <a href="/Service347/" class="text-sm text-white/70 hover:text-secondary transition-colors">Terms of Use</a>
+                    <a href="/Cookie992/" class="text-sm text-white/70 hover:text-secondary transition-colors">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        // Wait for the document to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get elements
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+
+            // Toggle mobile menu when button is clicked
+            mobileMenuBtn.addEventListener('click', function() {
+                if (mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.remove('hidden');
+                    mobileMenuBtn.textContent = '✕';
+                } else {
+                    mobileMenu.classList.add('hidden');
+                    mobileMenuBtn.textContent = '☰';
+                }
+            });
+
+            // Close mobile menu when clicking a link
+            const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+            mobileMenuLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileMenu.classList.add('hidden');
+                    mobileMenuBtn.textContent = '☰';
+                });
+            });
+
+            // Close mobile menu when scrolling
+            window.addEventListener('scroll', function() {
+                if (!mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                    mobileMenuBtn.textContent = '☰';
+                }
+            });
+
+            // Add smooth scrolling to all links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80, // Adjust for header height
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+
+</html>
